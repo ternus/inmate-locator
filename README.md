@@ -1,4 +1,4 @@
 inmate-locator
 ==============
 
-Inmate locator webapp for the Prison Book Program.
+Inmate locator webapp for the [Prison Book Program](http://www.prisonbookprogram.org/).

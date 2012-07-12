@@ -1,0 +1,64 @@
+<html>
+<style type="text/css">
+#centercontent { 
+  width: 700px;
+  margin: auto;
+  border: 1px solid black;
+}
+
+#resultstable {
+  border: 1px solid black;
+  padding: 5px;
+  margin: 10px;
+}
+
+.result {
+  border: 1px solid black;
+  margin:auto;
+}
+
+</style>
+    <script type="text/javascript" src="jquery.js"></script>
+    <script type="text/javascript" src="inmate.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+  $.ajaxStartText = "Enter an inmate ID...";
+  $("#inmateId").val($.ajaxStartText);
+  $("#inmateId").click(function(event) {
+  console.debug("arglefraster");
+  console.debug($("#inmateId").val() + " " + $.ajaxStartText);
+  if ($("#inmateId").val() === $.ajaxStartText) { 
+     $("#inmateId").val("");
+  }
+  });
+  $("#inmateId").keypress(function(event) {
+  if (event.which === 13) {  // enter
+     console.debug("got some stuff");
+     $("#resultstable").append("<div id='"+$("#inmateId").val()+"' class='result loadingResult'><span class='inmateid'>"+$("#inmateId").val()+"</span> <img height=20 width=20 src='loading.gif' /></div>");
+     $.get("http://localhost:8080/lookup.json", 
+           {"id": $("#inmateId").val()}, 
+           function(data) {
+           $("#"+data.inmateId).replaceWith("<div class='result'><span class='inmateid'>"+data.inmateId+"</span> <span class='inmatename'>"+data.firstName+"&nbsp;"+data.lastName+"</span> <span class='inmatestatus'>"+data.status+"</span> <span class='inmatelocation'>"+data.location+"</span> <span class='inmatereleasedate'>"+data.releaseDate+"</span></div>");
+          }, "json"
+   );
+    $("#inmateId").val("");
+ }
+});
+});
+</script>
+
+<head>
+<title>Inmate Locator 2.0</title>
+</head>
+<body>
+<div id="centercontent">
+<div id="resultstable">
+</div>
+
+<form action="" onsubmit="return false;">
+<input type="text" id="inmateId"/>
+</form>
+
+</div>
+</body>
+</html>
